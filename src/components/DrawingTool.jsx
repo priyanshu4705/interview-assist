@@ -3,14 +3,10 @@ import rough from "roughjs/bundled/rough.esm";
 
 const gen = rough.generator();
 
-const createElement = (x1, y1, x2, y2) => {
-  const roughElement = gen.line(x1, y1, x2, y2);
-  return { x1, y1, x2, y2, roughElement };
-};
-
 const DrawingTool = () => {
   const [elements, setElements] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [elementType, setElementType] = useState("line");
 
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas");
@@ -24,6 +20,23 @@ const DrawingTool = () => {
     elements.forEach((element) => rc.draw(element.roughElement));
   }, [elements]);
 
+  const createElement = (x1, y1, x2, y2) => {
+    let roughElement;
+
+    if (elementType === "line") {
+      roughElement = gen.line(x1, y1, x2, y2);
+    } else if (elementType === "rectangle") {
+      roughElement = gen.rectangle(x1, y1, x2 - x1, y2 - y1);
+    } else if (elementType === "circle") {
+      roughElement = gen.circle(
+        x1,
+        y1,
+        2 * Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+      );
+    }
+
+    return { x1, y1, x2, y2, roughElement };
+  };
   const startDrawing = (event) => {
     setIsDrawing(true);
     const { clientX: posX, clientY: posY } = event;
@@ -49,16 +62,24 @@ const DrawingTool = () => {
   };
 
   return (
-    <canvas
-      id="canvas"
-      width={window.innerWidth}
-      height={window.innerHeight}
-      onMouseDown={startDrawing}
-      onMouseUp={finishDrawing}
-      onMouseMove={draw}
-    >
-      Canvas
-    </canvas>
+    <>
+      <div className="buttons">
+        <button onClick={() => setElementType("line")}>line</button>
+        <button onClick={() => setElementType("rectangle")}>rectangle</button>
+        <button onClick={() => setElementType("circle")}>circle</button>
+      </div>
+      <canvas
+        style={{zIndex: -1}}
+        id="canvas"
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onMouseDown={startDrawing}
+        onMouseUp={finishDrawing}
+        onMouseMove={draw}
+      >
+        Canvas
+      </canvas>
+    </>
   );
 };
 
