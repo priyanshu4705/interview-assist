@@ -1,5 +1,5 @@
 const WhiteBoard = () => {
-  return <div>WhiteBoard</div>;
+  return <div>whiteboard</div>;
 };
 
 export default WhiteBoard;
