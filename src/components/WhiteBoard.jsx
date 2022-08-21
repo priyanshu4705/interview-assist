@@ -1,5 +1,11 @@
+import DrawingTool from "./DrawingTool";
+
 const WhiteBoard = () => {
-  return <div>whiteboard</div>;
+  return (
+    <div>
+      <DrawingTool />
+    </div>
+  );
 };
 
 export default WhiteBoard;
