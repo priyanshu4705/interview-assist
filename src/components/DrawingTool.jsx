@@ -67,6 +67,8 @@ const DrawingTool = () => {
         <button onClick={() => setElementType("line")}>line</button>
         <button onClick={() => setElementType("rectangle")}>rectangle</button>
         <button onClick={() => setElementType("circle")}>circle</button>
+        {/* <button onClick={() => setElementType("pencil")}>pencil</button> */}
+        <button onClick={() => setElements([])}>clear screen</button>
       </div>
       <canvas
         style={{zIndex: -1}}
